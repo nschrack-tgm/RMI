@@ -3,12 +3,17 @@ package Schrack;
 //MyServiceServer
 import java.math.BigDecimal;
 import java.rmi.*;
-import java.rmi.server.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.UnicastRemoteObject;
 
-public class PiServer extends UnicastRemoteObject {
+public class PiServer{
 	
 	private Calculator calculation;
 	private String name;
+	private CalculatorImpl svr;
+	private Registry registry;
 	
 	public PiServer (String name) throws RemoteException {		
 		super(); 
@@ -16,11 +21,27 @@ public class PiServer extends UnicastRemoteObject {
 		calculation = new CalculatorImpl();	
 	}
 	
-	
-	public BigDecimal calculate(int digits) {
-		return calculation.pi(digits);
-	}
+	public void register()throws RemoteException{
+		if (System.getSecurityManager() == null)
+			System.setSecurityManager ( new RMISecurityManager()); 
 
+		//RMI-Registry wird gestratet 
+		registry = LocateRegistry.createRegistry( Registry.REGISTRY_PORT );
+
+
+		svr = new CalculatorImpl();
+		Calculator stub = (Calculator) UnicastRemoteObject.exportObject( svr, 0 );
+
+   	 	registry.rebind( name, stub );	
+   	 	System.out.println("Successfull");
+	}
+	
+	public void unregister()throws RemoteException, NotBoundException{
+		UnicastRemoteObject.unexportObject( svr, true );
+		registry.unbind(name);
+
+	}
+	
 	public String getName() {
 		return name;
 	}

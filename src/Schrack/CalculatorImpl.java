@@ -33,6 +33,7 @@ package Schrack;
 
 
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
 
 public class CalculatorImpl implements Calculator{
 
@@ -51,7 +52,7 @@ public class CalculatorImpl implements Calculator{
     /**
      * Calculate pi.
      */
-    public BigDecimal pi(int digits) {
+    public BigDecimal pi(int digits) throws RemoteException{
         this.digits = digits;
     	return computePi(digits);
     }

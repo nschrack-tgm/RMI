@@ -44,16 +44,12 @@ public class CalculatorImpl implements Calculator{
     /** rounding mode to use during pi computation */
     private static final int roundingMode = 
         BigDecimal.ROUND_HALF_EVEN;
-
-    /** digits of precision after the decimal point */
-    private int digits;
-    
+ 
 
     /**
      * Calculate pi.
      */
     public BigDecimal pi(int digits) throws RemoteException{
-        this.digits = digits;
     	return computePi(digits);
     }
 

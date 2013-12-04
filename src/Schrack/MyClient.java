@@ -10,8 +10,8 @@ public class MyClient {
 		if ( System.getSecurityManager() == null ) {
 			System.setSecurityManager( new RMISecurityManager() ); 
 		}
-		Registry registry = LocateRegistry.getRegistry(1099);
-		Calculator p = ( Calculator ) registry.lookup( "rmi://my.host.edu/PiServer" );
+		Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
+		Calculator p = ( Calculator ) registry.lookup( "PiServer" );
 		
 		System.out.println ( p.pi(17) );
 		}
